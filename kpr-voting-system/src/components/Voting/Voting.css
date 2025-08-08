@@ -476,7 +476,20 @@
 @media (max-width: 768px) {
   .voting-container,
   .thank-you-container {
-    padding-top: 80px;
+    padding: 80px 15px 20px;
+  }
+
+  .voting-header {
+    margin-bottom: 25px;
+  }
+
+  .voting-header h2 {
+    font-size: 24px;
+    margin-bottom: 8px;
+  }
+
+  .voting-header p {
+    font-size: 16px;
   }
 
   .candidates-grid {
@@ -484,39 +497,90 @@
     gap: 20px;
   }
 
-  .voting-header h2 {
-    font-size: 28px;
+  .candidate-image-wrapper {
+    height: 250px;
+  }
+
+  .candidate-details {
+    padding: 20px 15px;
+  }
+
+  .candidate-name {
+    font-size: 20px;
   }
 
   .vote-button {
-    padding: 15px 40px;
+    padding: 15px 30px;
     font-size: 16px;
+    width: 100%;
+    max-width: 300px;
   }
 
   .thank-you-header {
-    padding: 30px 20px;
+    padding: 25px 20px;
+  }
+
+  .thank-you-header h1 {
+    font-size: 28px;
+  }
+
+  .success-icon {
+    width: 60px;
+    height: 60px;
+    font-size: 36px;
   }
 
   .votes-summary {
-    padding: 30px 20px;
+    padding: 20px 15px;
   }
 
   .voted-candidates-grid {
     grid-template-columns: 1fr;
+    gap: 15px;
   }
 
-  .candidate-image-wrapper {
-    height: 200px;
+  .voted-candidate-card {
+    margin-bottom: 15px;
+  }
+
+  .voted-candidate-content {
+    padding: 12px;
+  }
+
+  .countdown-section {
+    padding: 20px;
+  }
+
+  .countdown-text {
+    font-size: 16px;
+  }
+
+  .countdown-number {
+    font-size: 24px;
+  }
+
+  .logout-now-btn {
+    padding: 12px 30px;
+    width: 100%;
+    max-width: 250px;
   }
 }
 
 @media (max-width: 480px) {
   .voting-header h2 {
-    font-size: 24px;
+    font-size: 22px;
+  }
+
+  .voting-header p {
+    font-size: 14px;
+  }
+
+  .candidate-image-wrapper {
+    height: 220px;
   }
 
   .candidate-details {
-    padding: 20px;
+    padding: 15px;
   }
 
   .candidate-name {
@@ -525,6 +589,48 @@
 
   .candidate-info {
     font-size: 14px;
+  }
+
+  .vote-button {
+    padding: 12px 25px;
+    font-size: 14px;
+  }
+
+  .thank-you-header h1 {
+    font-size: 24px;
+  }
+
+  .user-greeting {
+    font-size: 18px;
+  }
+
+  .thank-you-message {
+    font-size: 14px;
+  }
+
+  .votes-summary h2 {
+    font-size: 22px;
+  }
+
+  .voted-candidate-info h4 {
+    font-size: 16px;
+  }
+
+  .voted-candidate-info p {
+    font-size: 13px;
+  }
+
+  .countdown-text {
+    font-size: 14px;
+  }
+
+  .countdown-number {
+    font-size: 22px;
+  }
+
+  .logout-now-btn {
+    font-size: 14px;
+    padding: 10px 25px;
   }
 }
 

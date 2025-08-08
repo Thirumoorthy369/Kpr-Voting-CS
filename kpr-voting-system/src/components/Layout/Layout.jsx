@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { supabase } from '../../lib/supabase';
 import UserHeader from './UserHeader';
+import Footer from '../Common/Footer';
 import './Layout.css';
 
 const Layout = ({ children }) => {
@@ -67,12 +68,14 @@ const Layout = ({ children }) => {
           right: 0,
           bottom: 0,
           backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          paddingBottom: '60px', // Add padding to account for footer
           zIndex: 1
         }}
       />
       <div style={{ position: 'relative', zIndex: 2 }}>
         {children}
       </div>
+      <Footer />
     </div>
   );
 };
