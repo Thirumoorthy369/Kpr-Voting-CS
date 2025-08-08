@@ -199,24 +199,64 @@ const ManageCandidates = () => {
     window.scrollTo(0, 0); // Scroll to form
   };
 
-  const handleDelete = async (id) => {
-    if (window.confirm('Are you sure you want to delete this candidate? This action cannot be undone.')) {
-      try {
-        const { error } = await supabase
-          .from('candidates')
-          .delete()
-          .eq('id', id);
-          
-        if (error) throw error;
-        
-        await fetchCandidates();
-        alert('Candidate deleted successfully');
-      } catch (error) {
-        console.error('Error deleting candidate:', error);
-        alert(`Error deleting candidate: ${error.message}`);
+ const handleDelete = async (id) => {
+  // Find the candidate to show their name in confirmation
+  const candidate = candidates.find(c => c.id === id);
+  
+  if (!candidate) return;
+
+  const confirmMessage = `Are you sure you want to delete "${candidate.name}"?\n\nThis will also delete:\n- All votes for this candidate (${candidate.votes || 0} votes)\n- All voting records\n\nThis action cannot be undone.`;
+
+  if (window.confirm(confirmMessage)) {
+    setLoading(true);
+    try {
+      // Show progress
+      alert('Deleting candidate data... Please wait.');
+
+      // Step 1: Delete all votes for this candidate
+      const { error: votesError } = await supabase
+        .from('votes')
+        .delete()
+        .eq('candidate_id', id);
+      
+      if (votesError && votesError.code !== 'PGRST116') { // PGRST116 = no rows to delete
+        console.error('Error deleting votes:', votesError);
+        throw new Error(`Failed to delete votes: ${votesError.message}`);
       }
+
+      // Step 2: Delete from user_votes table
+      const { error: userVotesError } = await supabase
+        .from('user_votes')
+        .delete()
+        .eq('candidate_id', id);
+      
+      if (userVotesError && userVotesError.code !== 'PGRST116') {
+        console.error('Error deleting user votes:', userVotesError);
+        // Continue anyway as this might not have entries
+      }
+
+      // Step 3: Delete the candidate
+      const { error: candidateError } = await supabase
+        .from('candidates')
+        .delete()
+        .eq('id', id);
+        
+      if (candidateError) {
+        throw new Error(`Failed to delete candidate: ${candidateError.message}`);
+      }
+      
+      alert(`Successfully deleted "${candidate.name}" and all related data.`);
+      await fetchCandidates(); // Refresh the list
+      
+    } catch (error) {
+      console.error('Error in delete operation:', error);
+      alert(`Error: ${error.message}\n\nPlease try again or contact support if the issue persists.`);
+    } finally {
+      setLoading(false);
     }
-  };
+  }
+};
+
 
   const resetForm = () => {
     setFormData({
