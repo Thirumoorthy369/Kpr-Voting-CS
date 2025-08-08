@@ -55,7 +55,7 @@ const Layout = ({ children }) => {
       
       {/* Global Title - Top Center */}
       <div className="global-title">
-        <h1>KPRCAS CS VOTING SYSTEM</h1>
+        <h1>KPRCAS SOCS VOTING SYSTEM</h1>
       </div>
 
       <UserHeader />
