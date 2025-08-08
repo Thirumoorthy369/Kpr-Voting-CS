@@ -12,11 +12,23 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const savedUser = localStorage.getItem('user');
+    const savedVotingState = localStorage.getItem('votingState');
+    
     if (savedUser) {
       const userData = JSON.parse(savedUser);
       setUser(userData);
       setIsAdmin(userData.isAdmin || false);
     }
+    
+    if (savedVotingState) {
+      const votingState = JSON.parse(savedVotingState);
+      // Restore voting state if needed
+      if (votingState.inProgress && votingState.currentRole) {
+        // Navigate back to the current role if voting was in progress
+        window.location.href = `/voting/role/${votingState.currentRole}`;
+      }
+    }
+    
     setLoading(false);
   }, []);
 

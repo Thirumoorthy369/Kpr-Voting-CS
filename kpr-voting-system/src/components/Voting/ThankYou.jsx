@@ -95,7 +95,7 @@ const ThankYou = () => {
           <h1>Thank You for Voting!</h1>
           <p className="user-greeting">Dear {user.name},</p>
           <p className="thank-you-message">
-            Your votes have been successfully recorded. Thank you for participating in the KPI student council elections.
+            Your votes have been successfully recorded. Thank you for participating in the KPR student council elections.
           </p>
         </div>
         

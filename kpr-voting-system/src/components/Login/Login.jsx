@@ -111,14 +111,7 @@ const Login = () => {
           </button>
         </form>
         
-        {/* Optional: Add hint for development/testing */}
-        {process.env.NODE_ENV === 'development' && (
-          <div className="login-hint">
-            <p>Test Credentials:</p>
-            <small>Admin: ADMIN / secretpassword</small><br/>
-            <small>Student: 23BCS01 / kprcas123</small>
-          </div>
-        )}
+        
       </div>
     </div>
   );

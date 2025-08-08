@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
 import { Link } from 'react-router-dom';
+import RolePieChart from './RolePieChart';
 import './Admin.css';
 
 const VoteResults = () => {
@@ -191,6 +192,18 @@ const VoteResults = () => {
           </div>
         );
       })}
+
+      {/* Pie Charts Section */}
+      <div className="pie-charts-grid">
+        {results.map(roleResult => (
+          <div key={roleResult.roleId} className="pie-chart-container">
+            <RolePieChart roleData={{
+              name: roleResult.role,
+              candidates: roleResult.candidates
+            }} />
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

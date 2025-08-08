@@ -30,7 +30,7 @@ const CandidateSelection = () => {
     if (roleId && user?.id) {
       loadRoleData();
     }
-  }, [roleId]); // Only depend on roleId change
+  }, [roleId, user?.id]); // Depend on roleId and user.id changes
 
   const loadRoleData = async () => {
     try {

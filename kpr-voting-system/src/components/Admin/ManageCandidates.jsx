@@ -48,9 +48,10 @@ const ManageCandidates = () => {
     }
   };
 
-  // Enhanced image optimization with square crop
+  // Enhanced image optimization with proper aspect ratio
   const optimizeImage = async (file) => {
-    const targetSize = 400; // Square size for candidates
+    const maxWidth = 800; // Max width for the image
+    const maxHeight = 1000; // Max height for the image
     const quality = 0.85;
 
     return new Promise((resolve, reject) => {
