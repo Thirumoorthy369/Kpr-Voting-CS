@@ -133,7 +133,7 @@ const CandidateSelection = () => {
     setSubmitting(true);
     
     try {
-      // Record the vote
+      // Record the vote in votes table only - we'll count from this table
       const { error: voteError } = await supabase
         .from('votes')
         .insert([{
@@ -144,14 +144,6 @@ const CandidateSelection = () => {
         }]);
       
       if (voteError) throw voteError;
-      
-      // Update candidate vote count
-      const { error: updateError } = await supabase
-        .from('candidates')
-        .update({ votes: (selectedCandidate.votes || 0) + 1 })
-        .eq('id', selectedCandidate.id);
-      
-      if (updateError) throw updateError;
       
       // Record user's vote for this role
       const { error: userVoteError } = await supabase

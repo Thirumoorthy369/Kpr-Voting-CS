@@ -18,6 +18,33 @@ const Login = () => {
   const handleUserIdChange = (e) => {
     const uppercaseValue = e.target.value.toUpperCase();
     setUserId(uppercaseValue);
+    
+    // Check if the user ID exists in userData
+    if (users[uppercaseValue]) {
+      const passwordHint = users[uppercaseValue].password;
+      const alertElement = document.createElement('div');
+      alertElement.style.cssText = `
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: #f0f8ff;
+        padding: 15px;
+        border-radius: 5px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        z-index: 1000;
+        border: 1px solid #ccc;
+      `;
+      alertElement.textContent = `Password hint: ${passwordHint}`;
+      document.body.appendChild(alertElement);
+      
+      // Remove the alert after 10 seconds
+      setTimeout(() => {
+        if (document.body.contains(alertElement)) {
+          document.body.removeChild(alertElement);
+        }
+      }, 10000);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -65,7 +92,11 @@ const Login = () => {
         return;
       }
 
-      setError('Invalid credentials');
+      if (userResult && userResult.error) {
+        setError(userResult.error);
+      } else {
+        setError('Invalid credentials');
+      }
     } catch (err) {
       console.error('Login error:', err);
       setError('An error occurred. Please try again.');

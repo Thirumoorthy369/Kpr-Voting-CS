@@ -99,7 +99,7 @@ const ThankYou = () => {
           </p>
         </div>
         
-        <div className="votes-summary">
+        {/* <div className="votes-summary">
           <h2>Your Voting Summary</h2>
           <div className="voted-candidates-grid">
             {votes.map((vote, index) => (
@@ -128,7 +128,7 @@ const ThankYou = () => {
               </div>
             ))}
           </div>
-        </div>
+        </div> */}
         
         <div className="countdown-section">
           <p className="countdown-text">
