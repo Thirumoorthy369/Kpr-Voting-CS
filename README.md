@@ -52,20 +52,24 @@ A modern, web-based voting system tailored for student council elections. Crafte
 ## Setup Instructions
 
 ### 1. Clone the Repository
+```
 git clone https://github.com/Thirumoorthy369/KPR-Voting-System.git
 cd kpr-voting-system
-
+```
 ### 2. Install Dependencies
+```
 npm install
-
+```
 ### 3. Configure Environment
+```
 Create a .env file in the project root with the following:
 
 VITE_SUPABASE_URL=your_supabase_url
 VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
 ADMIN_USERNAME=your_admin_username
 ADMIN_PASSWORD=your_admin_password
-
+```
 ### 4. Start the Development Server
-bash
+```
 npm run dev
+```
