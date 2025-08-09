@@ -132,7 +132,7 @@ export const users = {
     '25BCS129': { password: '230984', name: '25BCS129' },
     '25BCS130': { password: '483920', name: '25BCS130' },
     '25BCS131': { password: '284971', name: '25BCS131' },
-    '25BCS132': { password: '609284', name: '25BCS132' }
+    '25BCS132': { password: '609284', name: '25BCS132' },
 // II-CS
  
     '24BCS01': { password: '385920', name: '24BCS01' },
@@ -203,7 +203,7 @@ export const users = {
     '24BCS66': { password: '402958', name: '24BCS66' },
     '24BCS67': { password: '728495', name: '24BCS67' },
     '24BCS68': { password: '928374', name: '24BCS68' },
-    '24BCS69': { password: '480392', name: '24BCS69' }
+    '24BCS69': { password: '480392', name: '24BCS69' },
 // III-CS
     '23BCS01': { password: '482930', name: '23BCS01' },
     '23BCS02': { password: '391028', name: '23BCS02' },
@@ -273,6 +273,6 @@ export const users = {
     '23BCS66': { password: '598203', name: '23BCS66' },
     '23BCS67': { password: '689204', name: '23BCS67' },
     '23BCS68': { password: '720394', name: '23BCS68' },
-    '23BCS69': { password: '839204', name: '23BCS69' }
+    '23BCS69': { password: '839204', name: '23BCS69' },
     '23BCST01': { password: '271543', name: '23BCST01' }
 };
