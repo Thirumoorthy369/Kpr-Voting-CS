@@ -10,9 +10,23 @@ export const AuthProvider = ({ children }) => {
   const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
 
+  const cleanupStaleSessions = async () => {
+    // Clean up sessions older than 2 hours
+    const twoHoursAgo = new Date();
+    twoHoursAgo.setHours(twoHoursAgo.getHours() - 2);
+    
+    await supabase
+      .from('active_sessions')
+      .delete()
+      .lt('started_at', twoHoursAgo.toISOString());
+  };
+
   useEffect(() => {
     const savedUser = localStorage.getItem('user');
     const savedVotingState = localStorage.getItem('votingState');
+    
+    // Clean up stale sessions on component mount
+    cleanupStaleSessions();
     
     if (savedUser) {
       const userData = JSON.parse(savedUser);
@@ -46,6 +60,17 @@ export const AuthProvider = ({ children }) => {
 
   const loginAsUser = async (userId, password, users) => {
     if (users[userId] && users[userId].password === password) {
+      // Check for active sessions
+      const { data: activeSession } = await supabase
+        .from('active_sessions')
+        .select('*')
+        .eq('user_id', userId)
+        .single();
+
+      if (activeSession) {
+        return { success: false, error: 'User is already logged in and in voting process' };
+      }
+
       // Always check current status from database
       const { data: existingUser } = await supabase
         .from('users')
@@ -74,6 +99,14 @@ export const AuthProvider = ({ children }) => {
         isAdmin: false,
         hasVoted
       };
+
+      // Create active session
+      await supabase
+        .from('active_sessions')
+        .insert([{
+          user_id: userId,
+          started_at: new Date().toISOString()
+        }]);
       
       setUser(userData);
       setIsAdmin(false);
@@ -84,7 +117,14 @@ export const AuthProvider = ({ children }) => {
     return { success: false, error: 'Invalid credentials' };
   };
 
-  const logout = () => {
+  const logout = async () => {
+    if (user && !user.isAdmin) {
+      // Remove active session
+      await supabase
+        .from('active_sessions')
+        .delete()
+        .eq('user_id', user.id);
+    }
     setUser(null);
     setIsAdmin(false);
     localStorage.removeItem('user');

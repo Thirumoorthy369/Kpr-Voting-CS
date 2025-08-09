@@ -31,30 +31,53 @@ const VoteResults = () => {
 
   const fetchResults = async () => {
     try {
-      // Fetch all roles with candidates
+      // Fetch all roles
       const { data: rolesData } = await supabase
         .from('roles')
-        .select('*, candidates(*)')
+        .select('id, name, order_index')
         .order('order_index');
 
-      // Fetch total votes
-      const { count } = await supabase
-        .from('votes')
-        .select('*', { count: 'exact', head: true });
+      if (!rolesData) return;
 
-      setTotalVotes(count || 0);
+      // For each role, get actual vote counts from the votes table
+      const roleResults = await Promise.all(rolesData.map(async (role) => {
+        // Get candidates for this role
+        const { data: candidates } = await supabase
+          .from('candidates')
+          .select('*')
+          .eq('role_id', role.id);
 
-      // Organize results by role and calculate percentages
-      const formattedResults = rolesData?.map(role => {
+        if (!candidates || candidates.length === 0) {
+          return {
+            role: role.name,
+            roleId: role.id,
+            candidates: []
+          };
+        }
+
+        // Count actual votes from votes table for each candidate
+        const candidateVotes = await Promise.all(candidates.map(async (candidate) => {
+          const { count } = await supabase
+            .from('votes')
+            .select('*', { count: 'exact' })
+            .eq('candidate_id', candidate.id)
+            .eq('role_id', role.id);
+
+          return {
+            ...candidate,
+            votes: count || 0
+          };
+        }));
+
         // Calculate total votes for this role
-        const roleTotalVotes = role.candidates.reduce((sum, candidate) => sum + (candidate.votes || 0), 0);
+        const roleTotalVotes = candidateVotes.reduce((sum, candidate) => sum + candidate.votes, 0);
         
         // Sort candidates by votes and calculate percentages
-        const candidatesWithPercentage = role.candidates
-          .sort((a, b) => (b.votes || 0) - (a.votes || 0))
+        const candidatesWithPercentage = candidateVotes
+          .sort((a, b) => b.votes - a.votes)
           .map(candidate => ({
             ...candidate,
-            percentage: roleTotalVotes > 0 ? ((candidate.votes || 0) / roleTotalVotes * 100).toFixed(1) : 0
+            percentage: roleTotalVotes > 0 ? ((candidate.votes) / roleTotalVotes * 100).toFixed(1) : 0
           }));
 
         return {
@@ -62,9 +85,15 @@ const VoteResults = () => {
           roleId: role.id,
           candidates: candidatesWithPercentage
         };
-      }) || [];
+      }));
 
-      setResults(formattedResults);
+      // Calculate total votes across all roles
+      const { count: totalVoteCount } = await supabase
+        .from('votes')
+        .select('*', { count: 'exact' });
+
+      setTotalVotes(totalVoteCount || 0);
+      setResults(roleResults);
     } catch (error) {
       console.error('Error fetching results:', error);
     }
