@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import VotingStatus from './VotingStatus';
 import './Admin.css';
 
 const AdminDashboard = () => {
   const { logout } = useAuth();
+  const [showVotingStatus, setShowVotingStatus] = useState(false);
 
   return (
     <div className="admin-dashboard">
@@ -31,6 +33,12 @@ const AdminDashboard = () => {
           <h2>View Results</h2>
           <p>See real-time voting results</p>
         </Link>
+
+        <div className="admin-card" onClick={() => setShowVotingStatus(!showVotingStatus)}>
+          <div className="admin-card-icon">📋</div>
+          <h2>Voting Status</h2>
+          <p>View who has voted and their choices</p>
+        </div>
         
         <div className="admin-card reset-card" onClick={() => {
           if (window.confirm('Are you sure you want to reset all votes?')) {
@@ -43,6 +51,12 @@ const AdminDashboard = () => {
           <p>Clear all voting data</p>
         </div>
       </div>
+
+      {showVotingStatus && (
+        <div className="voting-status-section">
+          <VotingStatus />
+        </div>
+      )}
     </div>
   );
 };
