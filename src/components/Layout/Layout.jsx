@@ -75,7 +75,7 @@ const Layout = ({ children }) => {
       <div style={{ position: 'relative', zIndex: 2 }}>
         {children}
       </div>
-      <Footer />
+{/* <Footer /> */}
     </div>
   );
 };
